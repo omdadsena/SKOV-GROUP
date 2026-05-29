@@ -1,396 +1,1974 @@
-<!-- SAVE THIS FILE AS: index.html -->
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SKOV GROUP</title>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SKOV GROUP — Build Smarter. Live Better.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet"/>
+<style>
+  /* ═══════════════════════════════════════════
+     ROOT VARIABLES — LUXURY DARK PALETTE
+  ═══════════════════════════════════════════ */
+  :root {
+    --black: #050505;
+    --obsidian: #0a0a0f;
+    --carbon: #111118;
+    --graphite: #1a1a24;
+    --steel: #252535;
+    --mist: #9090a8;
+    --silver: #c8c8d8;
+    --white: #f0f0f8;
+    --gold: #c9a84c;
+    --gold-light: #e8c96a;
+    --gold-glow: rgba(201,168,76,0.15);
+    --gold-glow-strong: rgba(201,168,76,0.35);
+    --accent: #4a9eff;
+    --accent-glow: rgba(74,158,255,0.2);
+    --danger: #ff4a6e;
+    --font-display: 'Cormorant Garamond', serif;
+    --font-ui: 'Syne', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+    --ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
-    <!-- GOOGLE FONT -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  /* ═══════════════════════════════════════════
+     RESET & BASE
+  ═══════════════════════════════════════════ */
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; overflow-x: hidden; }
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+    cursor: none;
+  }
+  a { color: inherit; text-decoration: none; }
+  img { display: block; max-width: 100%; }
+  button { cursor: none; border: none; background: none; font-family: inherit; }
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
+  /* ═══════════════════════════════════════════
+     CUSTOM CURSOR
+  ═══════════════════════════════════════════ */
+  #cursor {
+    position: fixed; top:0; left:0; z-index:9999; pointer-events:none;
+    mix-blend-mode: difference;
+  }
+  #cursor-dot {
+    width:8px; height:8px; border-radius:50%; background:var(--white);
+    transform:translate(-50%,-50%); transition:transform 0.1s;
+  }
+  #cursor-ring {
+    position:fixed; top:0; left:0; z-index:9998; pointer-events:none;
+    width:40px; height:40px; border-radius:50%;
+    border:1px solid rgba(201,168,76,0.6);
+    transform:translate(-50%,-50%);
+    transition:transform 0.15s var(--ease-luxury), width 0.3s var(--ease-luxury), height 0.3s var(--ease-luxury), opacity 0.3s;
+  }
+  body:hover #cursor-ring { opacity:1; }
 
-        body {
-            background: #050505;
-            color: white;
-            overflow-x: hidden;
-        }
+  /* ═══════════════════════════════════════════
+     CINEMATIC INTRO OVERLAY
+  ═══════════════════════════════════════════ */
+  #intro {
+    position:fixed; inset:0; z-index:1000;
+    background:var(--black);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    transition:opacity 1.2s var(--ease-luxury), visibility 1.2s;
+  }
+  #intro.hidden { opacity:0; visibility:hidden; pointer-events:none; }
 
-        /* LOADER */
+  .intro-logo {
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 10vw, 9rem);
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(201,168,76,0.3);
+    animation: introReveal 2s var(--ease-luxury) 0.5s forwards;
+  }
+  @keyframes introReveal {
+    0%   { -webkit-text-stroke-color:rgba(201,168,76,0); letter-spacing:0.6em; opacity:0; }
+    50%  { -webkit-text-stroke-color:rgba(201,168,76,0.8); color:transparent; }
+    100% { -webkit-text-stroke-color:rgba(201,168,76,0); color:var(--white); letter-spacing:0.3em; opacity:1; }
+  }
 
-        .loader {
-            position: fixed;
-            width: 100%;
-            height: 100vh;
-            background: black;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            z-index: 9999;
-            animation: fadeOut 2s ease forwards;
-            animation-delay: 3s;
-        }
+  .intro-line {
+    width:0; height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent);
+    animation:introLine 1.5s var(--ease-luxury) 1.5s forwards;
+    margin-top:1.5rem;
+  }
+  @keyframes introLine { to { width:300px; } }
 
-        .loader h1 {
-            font-size: 4rem;
-            color: white;
-            letter-spacing: 5px;
-        }
+  .intro-tagline {
+    font-family:var(--font-ui); font-size:0.7rem; letter-spacing:0.4em;
+    text-transform:uppercase; color:var(--gold); margin-top:1.2rem;
+    opacity:0; animation:fadeUp 1s var(--ease-luxury) 2s forwards;
+  }
+  .intro-progress {
+    position:absolute; bottom:10%; left:50%; transform:translateX(-50%);
+    width:200px; height:1px; background:var(--steel); overflow:hidden;
+  }
+  .intro-progress-bar {
+    height:100%; background:var(--gold);
+    animation:progressFill 3s var(--ease-luxury) forwards;
+  }
+  @keyframes progressFill { to { width:100%; } }
 
-        .loader span {
-            color: gold;
-        }
+  /* ═══════════════════════════════════════════
+     GRAIN OVERLAY
+  ═══════════════════════════════════════════ */
+  #grain {
+    position:fixed; inset:0; z-index:900; pointer-events:none;
+    opacity:0.025;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+    animation:grainShift 0.5s steps(2) infinite;
+  }
+  @keyframes grainShift {
+    0%   { transform:translate(0,0); }
+    25%  { transform:translate(-1%,-1%); }
+    50%  { transform:translate(1%,1%); }
+    75%  { transform:translate(-1%,1%); }
+    100% { transform:translate(1%,-1%); }
+  }
 
-        .loader p {
-            margin-top: 10px;
-            color: #999;
-            letter-spacing: 3px;
-        }
+  /* ═══════════════════════════════════════════
+     NAVIGATION
+  ═══════════════════════════════════════════ */
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:800;
+    padding:1.5rem 4rem;
+    display:flex; align-items:center; justify-content:space-between;
+    transition:background 0.5s, backdrop-filter 0.5s, padding 0.4s;
+  }
+  nav.scrolled {
+    background:rgba(5,5,5,0.85);
+    backdrop-filter:blur(20px);
+    padding:1rem 4rem;
+    border-bottom:1px solid rgba(201,168,76,0.08);
+  }
+  .nav-logo {
+    font-family:var(--font-display);
+    font-size:1.4rem; font-weight:300; letter-spacing:0.25em;
+    color:var(--white);
+    display:flex; align-items:center; gap:0.6rem;
+  }
+  .nav-logo-mark {
+    width:28px; height:28px;
+    border:1px solid var(--gold);
+    display:flex; align-items:center; justify-content:center;
+    font-size:0.7rem; color:var(--gold); font-family:var(--font-ui);
+    letter-spacing:0.1em;
+  }
+  .nav-links {
+    display:flex; align-items:center; gap:2.5rem;
+    list-style:none;
+  }
+  .nav-links a {
+    font-family:var(--font-ui); font-size:0.72rem;
+    letter-spacing:0.15em; text-transform:uppercase; color:var(--mist);
+    transition:color 0.3s; position:relative;
+  }
+  .nav-links a::after {
+    content:''; position:absolute; bottom:-4px; left:0;
+    width:0; height:1px; background:var(--gold);
+    transition:width 0.3s var(--ease-luxury);
+  }
+  .nav-links a:hover { color:var(--white); }
+  .nav-links a:hover::after { width:100%; }
+  .nav-cta {
+    font-family:var(--font-ui); font-size:0.7rem; letter-spacing:0.15em;
+    text-transform:uppercase; color:var(--black); background:var(--gold);
+    padding:0.6rem 1.5rem; transition:all 0.3s var(--ease-luxury);
+  }
+  .nav-cta:hover { background:var(--gold-light); transform:translateY(-1px); }
 
-        @keyframes fadeOut {
-            to {
-                opacity: 0;
-                visibility: hidden;
-            }
-        }
+  /* Music toggle */
+  #music-toggle {
+    width:36px; height:36px; border-radius:50%;
+    border:1px solid rgba(201,168,76,0.4);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--gold); font-size:0.9rem;
+    transition:all 0.3s var(--ease-luxury);
+    cursor:none;
+  }
+  #music-toggle:hover { border-color:var(--gold); background:var(--gold-glow); }
+  #music-toggle.playing { border-color:var(--gold); background:var(--gold-glow); animation:pulseRing 2s infinite; }
+  @keyframes pulseRing {
+    0%,100% { box-shadow:0 0 0 0 var(--gold-glow-strong); }
+    50% { box-shadow:0 0 0 8px transparent; }
+  }
 
-        /* HERO SECTION */
+  /* ═══════════════════════════════════════════
+     HERO SECTION
+  ═══════════════════════════════════════════ */
+  #hero {
+    position:relative; height:100vh; overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+  }
 
-        .hero {
-            height: 100vh;
-            background:
-                linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.8)),
-                url('https://images.unsplash.com/photo-1511818966892-d7d671e672a2?q=80&w=1974&auto=format&fit=crop');
-            background-size: cover;
-            background-position: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-            position: relative;
-        }
+  /* Video background */
+  .hero-video-wrap {
+    position:absolute; inset:0; z-index:0;
+    overflow:hidden;
+  }
+  .hero-video-wrap::after {
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(
+      to bottom,
+      rgba(5,5,5,0.3) 0%,
+      rgba(5,5,5,0.1) 40%,
+      rgba(5,5,5,0.5) 70%,
+      rgba(5,5,5,0.95) 100%
+    );
+  }
+  .hero-video-wrap video, .hero-video-placeholder {
+    width:100%; height:100%; object-fit:cover;
+    filter:saturate(0.6) brightness(0.7);
+  }
+  .hero-video-placeholder {
+    background:linear-gradient(135deg, #0a0a1a 0%, #111128 30%, #0d0d1f 60%, #080814 100%);
+    display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden;
+  }
+  .hero-video-placeholder::before {
+    content:''; position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse 80% 60% at 30% 40%, rgba(201,168,76,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 80% at 70% 60%, rgba(74,158,255,0.04) 0%, transparent 70%);
+  }
+  .hero-placeholder-city {
+    position:absolute; bottom:0; left:0; right:0;
+    display:flex; align-items:flex-end; justify-content:center; gap:2px;
+    padding-bottom:0; opacity:0.12;
+  }
+  .building {
+    background:linear-gradient(to top, var(--graphite), var(--steel));
+    border-radius:1px 1px 0 0;
+  }
 
-        .hero-content {
-            animation: slideUp 1.5s ease;
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 40px;
-            border-radius: 25px;
-            max-width: 700px;
-        }
+  /* Hero Content */
+  .hero-content {
+    position:relative; z-index:10;
+    text-align:center; padding:0 2rem;
+    max-width:1100px;
+  }
+  .hero-eyebrow {
+    font-family:var(--font-ui); font-size:0.65rem; letter-spacing:0.5em;
+    text-transform:uppercase; color:var(--gold);
+    opacity:0; transform:translateY(20px);
+    animation:fadeUp 1s var(--ease-luxury) 3.5s forwards;
+    display:flex; align-items:center; justify-content:center; gap:1.5rem;
+    margin-bottom:1.5rem;
+  }
+  .hero-eyebrow::before, .hero-eyebrow::after {
+    content:''; width:40px; height:1px; background:var(--gold); opacity:0.5;
+  }
+  .hero-title {
+    font-family:var(--font-display);
+    font-size:clamp(3.5rem, 9vw, 9rem);
+    font-weight:300; line-height:0.95;
+    letter-spacing:-0.02em; color:var(--white);
+    opacity:0; transform:translateY(40px);
+    animation:fadeUp 1.2s var(--ease-luxury) 3.7s forwards;
+  }
+  .hero-title em { font-style:italic; color:var(--gold); }
+  .hero-title .outline {
+    color:transparent;
+    -webkit-text-stroke:1px rgba(240,240,248,0.4);
+  }
+  .hero-divider {
+    width:0; height:1px;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent);
+    margin:2rem auto;
+    animation:expandLine 1s var(--ease-luxury) 4.5s forwards;
+  }
+  @keyframes expandLine { to { width:200px; } }
+  .hero-tagline {
+    font-family:var(--font-display); font-size:clamp(1.1rem, 2.5vw, 1.8rem);
+    font-weight:300; font-style:italic; color:var(--silver);
+    opacity:0; transform:translateY(20px);
+    animation:fadeUp 1s var(--ease-luxury) 4.2s forwards;
+    letter-spacing:0.05em;
+  }
+  .hero-subtitle {
+    font-family:var(--font-body); font-size:clamp(0.85rem, 1.5vw, 1rem);
+    font-weight:300; color:var(--mist); max-width:550px; margin:1.5rem auto 0;
+    opacity:0; transform:translateY(20px);
+    animation:fadeUp 1s var(--ease-luxury) 4.6s forwards;
+    line-height:1.8;
+  }
+  .hero-ctas {
+    display:flex; align-items:center; justify-content:center; gap:1.5rem;
+    margin-top:3rem;
+    opacity:0; transform:translateY(20px);
+    animation:fadeUp 1s var(--ease-luxury) 5s forwards;
+    flex-wrap:wrap;
+  }
 
-        .hero h1 {
-            font-size: 4rem;
-            margin-bottom: 15px;
-        }
+  /* Floating orbs */
+  .hero-orb {
+    position:absolute; border-radius:50%; pointer-events:none; z-index:1;
+  }
+  .hero-orb-1 {
+    width:600px; height:600px; top:-100px; left:-150px;
+    background:radial-gradient(circle, rgba(201,168,76,0.04) 0%, transparent 70%);
+    animation:orbFloat 8s ease-in-out infinite;
+  }
+  .hero-orb-2 {
+    width:500px; height:500px; bottom:-100px; right:-100px;
+    background:radial-gradient(circle, rgba(74,158,255,0.04) 0%, transparent 70%);
+    animation:orbFloat 10s ease-in-out 2s infinite reverse;
+  }
+  @keyframes orbFloat {
+    0%,100% { transform:translateY(0) scale(1); }
+    50% { transform:translateY(-30px) scale(1.05); }
+  }
 
-        .hero h1 span {
-            color: gold;
-        }
+  /* Scroll indicator */
+  .scroll-indicator {
+    position:absolute; bottom:2.5rem; left:50%; transform:translateX(-50%);
+    z-index:10; display:flex; flex-direction:column; align-items:center; gap:0.5rem;
+    opacity:0; animation:fadeUp 1s var(--ease-luxury) 5.5s forwards;
+  }
+  .scroll-indicator span {
+    font-family:var(--font-ui); font-size:0.6rem; letter-spacing:0.3em;
+    text-transform:uppercase; color:var(--mist);
+  }
+  .scroll-line {
+    width:1px; height:50px; background:linear-gradient(to bottom,var(--gold),transparent);
+    animation:scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%,100% { opacity:1; transform:scaleY(1); }
+    50% { opacity:0.4; transform:scaleY(0.7); }
+  }
 
-        .hero p {
-            color: #ddd;
-            line-height: 1.7;
-            margin-bottom: 25px;
-        }
+  /* ═══════════════════════════════════════════
+     BUTTONS
+  ═══════════════════════════════════════════ */
+  .btn-primary {
+    position:relative; overflow:hidden;
+    font-family:var(--font-ui); font-size:0.72rem;
+    letter-spacing:0.2em; text-transform:uppercase;
+    padding:1rem 2.5rem; color:var(--black); background:var(--gold);
+    display:inline-flex; align-items:center; gap:0.8rem;
+    transition:all 0.4s var(--ease-luxury); cursor:none;
+  }
+  .btn-primary::before {
+    content:''; position:absolute; inset:0;
+    background:var(--gold-light); transform:translateX(-101%);
+    transition:transform 0.4s var(--ease-luxury);
+  }
+  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 20px 60px rgba(201,168,76,0.3); }
+  .btn-primary:hover::before { transform:translateX(0); }
+  .btn-primary span { position:relative; z-index:1; }
 
-        .btns {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
+  .btn-secondary {
+    font-family:var(--font-ui); font-size:0.72rem;
+    letter-spacing:0.2em; text-transform:uppercase;
+    padding:1rem 2.5rem; color:var(--white);
+    border:1px solid rgba(240,240,248,0.2);
+    display:inline-flex; align-items:center; gap:0.8rem;
+    transition:all 0.4s var(--ease-luxury); cursor:none;
+    backdrop-filter:blur(10px);
+  }
+  .btn-secondary:hover {
+    border-color:var(--gold); color:var(--gold);
+    transform:translateY(-2px);
+    background:rgba(201,168,76,0.05);
+  }
 
-        .btn {
-            padding: 14px 30px;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: 0.3s;
-        }
+  .btn-ghost {
+    font-family:var(--font-ui); font-size:0.7rem;
+    letter-spacing:0.2em; text-transform:uppercase;
+    color:var(--mist); display:inline-flex; align-items:center; gap:0.6rem;
+    transition:color 0.3s; cursor:none; padding:0.5rem 0;
+  }
+  .btn-ghost:hover { color:var(--gold); }
+  .btn-ghost .arrow { transition:transform 0.3s var(--ease-luxury); }
+  .btn-ghost:hover .arrow { transform:translateX(5px); }
 
-        .gold {
-            background: gold;
-            color: black;
-        }
+  /* ═══════════════════════════════════════════
+     STATS TICKER
+  ═══════════════════════════════════════════ */
+  .stats-ticker {
+    border-top:1px solid rgba(201,168,76,0.1);
+    border-bottom:1px solid rgba(201,168,76,0.1);
+    padding:1.2rem 0; overflow:hidden; background:rgba(10,10,15,0.8);
+  }
+  .ticker-track {
+    display:flex; gap:5rem; width:max-content;
+    animation:ticker 30s linear infinite;
+  }
+  @keyframes ticker { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+  .ticker-item {
+    display:flex; align-items:center; gap:1rem;
+    white-space:nowrap; flex-shrink:0;
+  }
+  .ticker-num {
+    font-family:var(--font-display); font-size:1.8rem; font-weight:300;
+    color:var(--gold); line-height:1;
+  }
+  .ticker-label {
+    font-family:var(--font-ui); font-size:0.6rem;
+    letter-spacing:0.2em; text-transform:uppercase; color:var(--mist);
+  }
+  .ticker-dot { width:4px; height:4px; border-radius:50%; background:var(--gold); opacity:0.4; }
 
-        .dark {
-            background: #111;
-            color: white;
-            border: 1px solid #333;
-        }
+  /* ═══════════════════════════════════════════
+     SECTIONS — SHARED
+  ═══════════════════════════════════════════ */
+  section { padding:8rem 4rem; position:relative; overflow:hidden; }
+  .section-label {
+    font-family:var(--font-ui); font-size:0.6rem; letter-spacing:0.4em;
+    text-transform:uppercase; color:var(--gold); margin-bottom:1.5rem;
+    display:flex; align-items:center; gap:1rem;
+  }
+  .section-label::before { content:''; width:30px; height:1px; background:var(--gold); }
+  .section-title {
+    font-family:var(--font-display);
+    font-size:clamp(2.2rem, 5vw, 4.5rem);
+    font-weight:300; line-height:1.1; color:var(--white);
+    margin-bottom:1.5rem;
+  }
+  .section-title em { font-style:italic; color:var(--gold); }
+  .section-desc {
+    font-family:var(--font-body); font-size:1rem; font-weight:300;
+    color:var(--mist); max-width:500px; line-height:1.8;
+  }
+  .reveal {
+    opacity:0; transform:translateY(40px);
+    transition:opacity 0.9s var(--ease-luxury), transform 0.9s var(--ease-luxury);
+  }
+  .reveal.visible { opacity:1; transform:translateY(0); }
 
-        .btn:hover {
-            transform: translateY(-3px) scale(1.03);
-        }
+  /* ═══════════════════════════════════════════
+     SERVICES / ABOUT GRID
+  ═══════════════════════════════════════════ */
+  #services { background:var(--obsidian); }
+  .services-grid {
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+    gap:1.5px; margin-top:5rem;
+    border:1.5px solid rgba(201,168,76,0.08);
+  }
+  .service-card {
+    padding:3rem; background:var(--carbon); position:relative; overflow:hidden;
+    transition:background 0.4s var(--ease-luxury);
+    cursor:none;
+  }
+  .service-card::before {
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(135deg,rgba(201,168,76,0.05) 0%,transparent 60%);
+    opacity:0; transition:opacity 0.4s;
+  }
+  .service-card:hover { background:var(--graphite); }
+  .service-card:hover::before { opacity:1; }
+  .service-card::after {
+    content:''; position:absolute; bottom:0; left:0;
+    width:0; height:1px; background:var(--gold);
+    transition:width 0.5s var(--ease-luxury);
+  }
+  .service-card:hover::after { width:100%; }
+  .service-num {
+    font-family:var(--font-display); font-size:3.5rem; font-weight:300;
+    color:rgba(201,168,76,0.12); line-height:1; margin-bottom:1.5rem;
+  }
+  .service-icon {
+    width:40px; height:40px; margin-bottom:1.5rem;
+    color:var(--gold); font-size:1.5rem;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .service-card h3 {
+    font-family:var(--font-ui); font-size:0.85rem; font-weight:600;
+    letter-spacing:0.15em; text-transform:uppercase; color:var(--white);
+    margin-bottom:1rem;
+  }
+  .service-card p {
+    font-size:0.9rem; color:var(--mist); line-height:1.7; font-weight:300;
+  }
+  .service-badge {
+    display:inline-flex; align-items:center; gap:0.4rem;
+    font-family:var(--font-ui); font-size:0.55rem; letter-spacing:0.2em;
+    text-transform:uppercase; color:var(--gold);
+    border:1px solid rgba(201,168,76,0.3); padding:0.3rem 0.8rem;
+    margin-top:1.5rem;
+  }
 
-        /* CONTRACTORS */
+  /* ═══════════════════════════════════════════
+     HOW IT WORKS
+  ═══════════════════════════════════════════ */
+  #how { background:var(--black); }
+  .process-wrap {
+    display:grid; grid-template-columns:1fr 1fr; gap:6rem;
+    align-items:center; margin-top:4rem;
+  }
+  .process-steps { display:flex; flex-direction:column; gap:0; }
+  .process-step {
+    display:flex; gap:2rem; align-items:flex-start;
+    padding:2.5rem 0; border-bottom:1px solid rgba(201,168,76,0.08);
+    position:relative; cursor:none;
+    transition:all 0.3s;
+  }
+  .process-step:last-child { border-bottom:none; }
+  .process-step:hover .step-num { color:var(--gold); }
+  .step-num {
+    font-family:var(--font-display); font-size:3rem; font-weight:300;
+    color:rgba(201,168,76,0.2); line-height:1; flex-shrink:0; width:70px;
+    transition:color 0.3s;
+  }
+  .step-body h3 {
+    font-family:var(--font-ui); font-size:0.85rem; font-weight:600;
+    letter-spacing:0.1em; text-transform:uppercase; color:var(--white);
+    margin-bottom:0.6rem;
+  }
+  .step-body p { font-size:0.9rem; color:var(--mist); line-height:1.7; font-weight:300; }
+  .process-visual {
+    position:relative; height:500px;
+    background:var(--carbon);
+    border:1px solid rgba(201,168,76,0.08);
+    overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .process-visual::before {
+    content:''; position:absolute; inset:0;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(201,168,76,0.08) 0%, transparent 50%),
+      radial-gradient(circle at 70% 70%, rgba(74,158,255,0.04) 0%, transparent 50%);
+  }
+  .process-diagram {
+    position:relative; z-index:1;
+    display:flex; flex-direction:column; align-items:center; gap:1.5rem;
+  }
+  .pd-node {
+    width:120px; height:50px; border:1px solid rgba(201,168,76,0.4);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-ui); font-size:0.6rem; letter-spacing:0.15em;
+    text-transform:uppercase; color:var(--gold);
+    position:relative; background:rgba(201,168,76,0.03);
+  }
+  .pd-node.active {
+    background:var(--gold); color:var(--black); border-color:var(--gold);
+    box-shadow:0 0 40px rgba(201,168,76,0.3);
+  }
+  .pd-arrow {
+    width:1px; height:30px; background:linear-gradient(to bottom,var(--gold),transparent);
+  }
 
-        .section {
-            padding: 80px 20px;
-        }
+  /* ═══════════════════════════════════════════
+     WHY SKOV
+  ═══════════════════════════════════════════ */
+  #why { background:var(--obsidian); }
+  .why-grid {
+    display:grid; grid-template-columns:1fr 1fr; gap:5rem;
+    align-items:center; margin-top:4rem;
+  }
+  .why-feature-list { display:flex; flex-direction:column; gap:2.5rem; }
+  .why-feature {
+    display:flex; gap:2rem; align-items:flex-start;
+    padding-bottom:2.5rem; border-bottom:1px solid rgba(201,168,76,0.06);
+  }
+  .why-feature:last-child { border-bottom:none; }
+  .why-icon {
+    width:48px; height:48px; flex-shrink:0;
+    border:1px solid rgba(201,168,76,0.3);
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.2rem; color:var(--gold);
+    background:rgba(201,168,76,0.03);
+  }
+  .why-feature h3 {
+    font-family:var(--font-ui); font-size:0.82rem; font-weight:600;
+    letter-spacing:0.1em; text-transform:uppercase; color:var(--white);
+    margin-bottom:0.5rem;
+  }
+  .why-feature p { font-size:0.9rem; color:var(--mist); line-height:1.7; font-weight:300; }
+  .why-visual {
+    position:relative; aspect-ratio:3/4; max-height:600px;
+    background:var(--carbon); overflow:hidden;
+    border:1px solid rgba(201,168,76,0.08);
+  }
+  .why-visual-inner {
+    position:absolute; inset:0;
+    background:linear-gradient(135deg,#0a0a1a,#111128,#0d0d1f);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .trust-badge-float {
+    position:absolute; background:rgba(10,10,15,0.95);
+    border:1px solid rgba(201,168,76,0.3);
+    padding:1.2rem 1.5rem;
+    backdrop-filter:blur(10px);
+    display:flex; align-items:center; gap:1rem;
+  }
+  .trust-badge-float:nth-child(1) { top:2rem; right:-1rem; animation:badgeFloat 4s ease-in-out infinite; }
+  .trust-badge-float:nth-child(2) { bottom:3rem; left:-1rem; animation:badgeFloat 5s ease-in-out 1s infinite reverse; }
+  @keyframes badgeFloat {
+    0%,100% { transform:translateY(0); }
+    50% { transform:translateY(-8px); }
+  }
+  .badge-icon { font-size:1.5rem; }
+  .badge-text-wrap {}
+  .badge-title {
+    font-family:var(--font-ui); font-size:0.65rem; font-weight:600;
+    letter-spacing:0.15em; text-transform:uppercase; color:var(--white);
+  }
+  .badge-sub { font-size:0.75rem; color:var(--mist); margin-top:0.2rem; }
+  .why-central-mark {
+    font-family:var(--font-display); font-size:6rem; font-weight:300;
+    color:rgba(201,168,76,0.06); letter-spacing:0.2em;
+    position:absolute; user-select:none;
+  }
 
-        .section-title {
-            text-align: center;
-            margin-bottom: 50px;
-        }
+  /* ═══════════════════════════════════════════
+     TESTIMONIALS
+  ═══════════════════════════════════════════ */
+  #testimonials { background:var(--black); overflow:hidden; }
+  .testimonial-track-wrap { overflow:hidden; margin-top:4rem; }
+  .testimonial-track {
+    display:flex; gap:2rem; width:max-content;
+    animation:testimonialSlide 40s linear infinite;
+  }
+  @keyframes testimonialSlide { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+  .testimonial-card {
+    width:380px; flex-shrink:0;
+    background:var(--carbon); border:1px solid rgba(201,168,76,0.08);
+    padding:2.5rem; position:relative;
+  }
+  .testimonial-card::before {
+    content:'"';
+    font-family:var(--font-display); font-size:6rem; font-weight:300;
+    color:rgba(201,168,76,0.1); position:absolute; top:-0.5rem; left:1.5rem;
+    line-height:1;
+  }
+  .testimonial-text {
+    font-family:var(--font-display); font-size:1rem; font-weight:300;
+    font-style:italic; color:var(--silver); line-height:1.7;
+    margin-bottom:2rem; position:relative; z-index:1;
+  }
+  .testimonial-author { display:flex; align-items:center; gap:1rem; }
+  .author-avatar {
+    width:40px; height:40px; border-radius:50%;
+    background:linear-gradient(135deg,var(--graphite),var(--steel));
+    border:1px solid rgba(201,168,76,0.3);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--font-display); font-size:1rem; color:var(--gold);
+  }
+  .author-name {
+    font-family:var(--font-ui); font-size:0.75rem; font-weight:600;
+    letter-spacing:0.1em; text-transform:uppercase; color:var(--white);
+  }
+  .author-role { font-size:0.75rem; color:var(--mist); margin-top:0.2rem; }
+  .star-row { display:flex; gap:0.3rem; margin-top:1.5rem; }
+  .star { color:var(--gold); font-size:0.75rem; }
 
-        .section-title h2 {
-            font-size: 2.5rem;
-        }
+  /* ═══════════════════════════════════════════
+     CITY COVERAGE
+  ═══════════════════════════════════════════ */
+  #cities { background:var(--obsidian); }
+  .cities-grid {
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(160px,1fr));
+    gap:1px; margin-top:4rem;
+    background:rgba(201,168,76,0.05);
+    border:1px solid rgba(201,168,76,0.05);
+  }
+  .city-item {
+    background:var(--carbon); padding:2rem 1.5rem;
+    transition:background 0.3s; cursor:none; position:relative; overflow:hidden;
+  }
+  .city-item::before {
+    content:''; position:absolute; bottom:0; left:0;
+    width:0; height:2px; background:var(--gold);
+    transition:width 0.4s var(--ease-luxury);
+  }
+  .city-item:hover { background:var(--graphite); }
+  .city-item:hover::before { width:100%; }
+  .city-name {
+    font-family:var(--font-ui); font-size:0.8rem; font-weight:600;
+    letter-spacing:0.1em; text-transform:uppercase; color:var(--white);
+    margin-bottom:0.3rem;
+  }
+  .city-state { font-size:0.75rem; color:var(--mist); }
+  .city-dot {
+    width:6px; height:6px; border-radius:50%;
+    background:var(--gold); margin-bottom:1rem; opacity:0.6;
+  }
+  .city-coming {
+    font-family:var(--font-ui); font-size:0.5rem; letter-spacing:0.2em;
+    text-transform:uppercase; color:var(--mist); margin-top:0.3rem;
+    opacity:0.6;
+  }
 
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            max-width: 1200px;
-            margin: auto;
-        }
+  /* ═══════════════════════════════════════════
+     CTA BAND
+  ═══════════════════════════════════════════ */
+  #cta-band {
+    background:var(--black); padding:10rem 4rem;
+    text-align:center; position:relative; overflow:hidden;
+  }
+  #cta-band::before {
+    content:''; position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 50%, rgba(201,168,76,0.05) 0%, transparent 70%);
+  }
+  .cta-band-title {
+    font-family:var(--font-display);
+    font-size:clamp(2.5rem, 6vw, 6rem);
+    font-weight:300; line-height:1; color:var(--white);
+    margin-bottom:2rem; position:relative; z-index:1;
+  }
+  .cta-band-title em { font-style:italic; color:var(--gold); }
+  .cta-band-sub {
+    font-size:1rem; color:var(--mist); margin-bottom:3rem;
+    position:relative; z-index:1; font-weight:300;
+  }
+  .cta-band-btns {
+    display:flex; align-items:center; justify-content:center; gap:1.5rem;
+    flex-wrap:wrap; position:relative; z-index:1;
+  }
 
-        .card {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 25px;
-            overflow: hidden;
-            transition: 0.4s;
-            backdrop-filter: blur(12px);
-        }
+  /* ═══════════════════════════════════════════
+     FOOTER
+  ═══════════════════════════════════════════ */
+  footer {
+    background:var(--obsidian);
+    border-top:1px solid rgba(201,168,76,0.08);
+    padding:5rem 4rem 3rem;
+  }
+  .footer-grid {
+    display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:4rem;
+    margin-bottom:4rem;
+  }
+  .footer-brand {}
+  .footer-logo {
+    font-family:var(--font-display); font-size:1.8rem; font-weight:300;
+    letter-spacing:0.2em; color:var(--white); margin-bottom:1.2rem;
+  }
+  .footer-brand p { font-size:0.9rem; color:var(--mist); line-height:1.7; max-width:280px; font-weight:300; }
+  .footer-col h4 {
+    font-family:var(--font-ui); font-size:0.65rem; font-weight:600;
+    letter-spacing:0.3em; text-transform:uppercase; color:var(--gold);
+    margin-bottom:1.5rem;
+  }
+  .footer-col ul { list-style:none; display:flex; flex-direction:column; gap:0.8rem; }
+  .footer-col a { font-size:0.85rem; color:var(--mist); transition:color 0.3s; }
+  .footer-col a:hover { color:var(--white); }
+  .footer-bottom {
+    border-top:1px solid rgba(201,168,76,0.06);
+    padding-top:2rem;
+    display:flex; align-items:center; justify-content:space-between;
+    flex-wrap:wrap; gap:1rem;
+  }
+  .footer-copy { font-size:0.78rem; color:var(--mist); }
+  .footer-legal { display:flex; gap:2rem; }
+  .footer-legal a { font-size:0.75rem; color:var(--mist); transition:color 0.3s; }
+  .footer-legal a:hover { color:var(--gold); }
+  .footer-tag {
+    font-family:var(--font-display); font-style:italic;
+    font-size:0.85rem; color:var(--gold); opacity:0.6;
+  }
 
-        .card:hover {
-            transform: translateY(-10px);
-        }
+  /* ═══════════════════════════════════════════
+     MODALS
+  ═══════════════════════════════════════════ */
+  .modal-overlay {
+    position:fixed; inset:0; z-index:2000;
+    background:rgba(5,5,5,0.9); backdrop-filter:blur(10px);
+    display:flex; align-items:center; justify-content:center;
+    padding:2rem; opacity:0; pointer-events:none;
+    transition:opacity 0.4s var(--ease-luxury);
+  }
+  .modal-overlay.open { opacity:1; pointer-events:all; }
+  .modal {
+    background:var(--carbon); border:1px solid rgba(201,168,76,0.15);
+    max-width:700px; width:100%; max-height:90vh; overflow-y:auto;
+    position:relative; transform:translateY(30px) scale(0.97);
+    transition:transform 0.5s var(--ease-luxury);
+    scrollbar-width:thin; scrollbar-color:var(--gold) transparent;
+  }
+  .modal-overlay.open .modal { transform:translateY(0) scale(1); }
+  .modal-close {
+    position:absolute; top:1.5rem; right:1.5rem; z-index:10;
+    width:32px; height:32px; border:1px solid rgba(201,168,76,0.3);
+    display:flex; align-items:center; justify-content:center;
+    color:var(--mist); font-size:1rem; cursor:none;
+    transition:all 0.3s; background:none;
+  }
+  .modal-close:hover { border-color:var(--gold); color:var(--gold); }
+  .modal-header {
+    padding:3rem 3rem 2rem;
+    border-bottom:1px solid rgba(201,168,76,0.08);
+    background:linear-gradient(135deg,var(--graphite),var(--carbon));
+  }
+  .modal-eyebrow {
+    font-family:var(--font-ui); font-size:0.6rem; letter-spacing:0.4em;
+    text-transform:uppercase; color:var(--gold); margin-bottom:1rem;
+  }
+  .modal-title {
+    font-family:var(--font-display); font-size:2.2rem; font-weight:300;
+    color:var(--white); line-height:1.1;
+  }
+  .modal-title em { font-style:italic; color:var(--gold); }
+  .modal-body { padding:2.5rem 3rem; }
 
-        .card img {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-        }
+  /* Contractor Modal */
+  .contact-info-card {
+    background:var(--graphite); border:1px solid rgba(201,168,76,0.1);
+    padding:2rem; margin-bottom:1.5rem;
+    display:flex; align-items:flex-start; gap:1.5rem;
+  }
+  .contact-icon { font-size:1.5rem; color:var(--gold); flex-shrink:0; }
+  .contact-card-title {
+    font-family:var(--font-ui); font-size:0.75rem; font-weight:600;
+    letter-spacing:0.1em; text-transform:uppercase; color:var(--white);
+    margin-bottom:0.4rem;
+  }
+  .contact-card-text { font-size:0.85rem; color:var(--mist); line-height:1.6; }
 
-        .card-content {
-            padding: 20px;
-        }
+  /* Join Modal — Multi-step */
+  .join-steps {
+    display:flex; gap:0; margin-bottom:3rem;
+    border-bottom:1px solid rgba(201,168,76,0.08);
+  }
+  .join-step-tab {
+    flex:1; padding:1rem; text-align:center;
+    font-family:var(--font-ui); font-size:0.6rem;
+    letter-spacing:0.15em; text-transform:uppercase; color:var(--mist);
+    border-bottom:2px solid transparent; transition:all 0.3s;
+    position:relative;
+  }
+  .join-step-tab.active { color:var(--gold); border-bottom-color:var(--gold); }
+  .join-step-tab.done { color:var(--mist); }
+  .join-step-tab.done::after { content:'✓'; position:absolute; right:0.5rem; top:50%; transform:translateY(-50%); font-size:0.7rem; color:var(--gold); }
+  .join-form-step { display:none; }
+  .join-form-step.active { display:block; animation:fadeUp 0.4s var(--ease-luxury); }
+  .form-row { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin-bottom:1.5rem; }
+  .form-group { display:flex; flex-direction:column; gap:0.5rem; }
+  .form-group label {
+    font-family:var(--font-ui); font-size:0.6rem; font-weight:600;
+    letter-spacing:0.2em; text-transform:uppercase; color:var(--mist);
+  }
+  .form-group input, .form-group select, .form-group textarea {
+    background:var(--graphite); border:1px solid rgba(201,168,76,0.12);
+    color:var(--white); padding:0.85rem 1rem;
+    font-family:var(--font-body); font-size:0.9rem; font-weight:300;
+    outline:none; transition:border-color 0.3s; width:100%;
+    appearance:none; -webkit-appearance:none;
+  }
+  .form-group input::placeholder, .form-group textarea::placeholder { color:rgba(144,144,168,0.5); }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color:var(--gold);
+  }
+  .form-group select { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M6 8L0 0h12z' fill='%23c9a84c'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 1rem center; padding-right:2.5rem; }
+  .form-group textarea { resize:vertical; min-height:100px; }
+  .form-full { grid-column:span 2; }
+  .specialty-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:0.75rem; margin-top:0.5rem; }
+  .specialty-chip {
+    border:1px solid rgba(201,168,76,0.15); padding:0.6rem;
+    text-align:center; font-family:var(--font-ui); font-size:0.6rem;
+    letter-spacing:0.1em; text-transform:uppercase; color:var(--mist);
+    cursor:none; transition:all 0.3s; user-select:none;
+  }
+  .specialty-chip:hover, .specialty-chip.selected {
+    border-color:var(--gold); color:var(--gold); background:var(--gold-glow);
+  }
+  .step-nav { display:flex; justify-content:space-between; align-items:center; margin-top:2rem; }
+  .step-progress-dots { display:flex; gap:0.5rem; }
+  .step-dot { width:6px; height:6px; border-radius:50%; background:var(--steel); transition:all 0.3s; }
+  .step-dot.active { background:var(--gold); width:20px; border-radius:3px; }
 
-        .card-content h3 {
-            margin-bottom: 10px;
-        }
+  /* Success state */
+  .join-success { text-align:center; padding:3rem 0; display:none; }
+  .join-success.show { display:block; animation:fadeUp 0.6s var(--ease-luxury); }
+  .success-check {
+    width:70px; height:70px; border:1px solid var(--gold);
+    border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-size:1.8rem; color:var(--gold); margin:0 auto 2rem;
+    animation:checkPulse 1s var(--ease-luxury) forwards;
+  }
+  @keyframes checkPulse { from { transform:scale(0); opacity:0; } to { transform:scale(1); opacity:1; } }
+  .success-title { font-family:var(--font-display); font-size:2rem; font-weight:300; color:var(--white); margin-bottom:1rem; }
+  .success-text { font-size:0.9rem; color:var(--mist); line-height:1.7; }
 
-        .tag {
-            display: inline-block;
-            background: gold;
-            color: black;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            margin-bottom: 15px;
-            font-weight: bold;
-        }
+  /* ═══════════════════════════════════════════
+     UTILITY
+  ═══════════════════════════════════════════ */
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(20px); }
+    to   { opacity:1; transform:translateY(0); }
+  }
+  .gold-text { color:var(--gold); }
+  .text-mist { color:var(--mist); }
+  .max-w { max-width:1200px; margin:0 auto; }
 
-        .whatsapp {
-            display: inline-block;
-            margin-top: 15px;
-            background: #25D366;
-            color: white;
-            padding: 10px 18px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: bold;
-        }
+  /* ═══════════════════════════════════════════
+     RESPONSIVE
+  ═══════════════════════════════════════════ */
+  @media (max-width:1024px) {
+    nav { padding:1.5rem 2rem; }
+    nav.scrolled { padding:1rem 2rem; }
+    .nav-links { display:none; }
+    section { padding:5rem 2rem; }
+    .process-wrap { grid-template-columns:1fr; gap:3rem; }
+    .why-grid { grid-template-columns:1fr; gap:3rem; }
+    .footer-grid { grid-template-columns:1fr 1fr; }
+  }
+  @media (max-width:768px) {
+    .hero-ctas { flex-direction:column; align-items:center; }
+    .form-row { grid-template-columns:1fr; }
+    .form-full { grid-column:span 1; }
+    .modal-header, .modal-body { padding:2rem 1.5rem; }
+    .footer-grid { grid-template-columns:1fr; gap:2rem; }
+    .specialty-grid { grid-template-columns:repeat(2,1fr); }
+  }
+  @media (max-width:480px) {
+    .hero-title { font-size:clamp(2.5rem,12vw,4rem); }
+    section { padding:4rem 1.2rem; }
+  }
 
-        /* FLOATING POPUP */
-
-        .popup {
-            position: fixed;
-            right: 20px;
-            bottom: 20px;
-            background: #111;
-            padding: 15px 20px;
-            border-radius: 15px;
-            border: 1px solid #333;
-            animation: popup 4s infinite;
-            z-index: 999;
-        }
-
-        @keyframes popup {
-            0% {
-                transform: translateY(100px);
-                opacity: 0;
-            }
-
-            20% {
-                transform: translateY(0);
-                opacity: 1;
-            }
-
-            80% {
-                transform: translateY(0);
-                opacity: 1;
-            }
-
-            100% {
-                transform: translateY(100px);
-                opacity: 0;
-            }
-        }
-
-        /* ANIMATION */
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(60px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        /* MOBILE */
-
-        @media(max-width:768px) {
-
-            .hero h1 {
-                font-size: 2.7rem;
-            }
-
-            .loader h1 {
-                font-size: 2.5rem;
-            }
-
-        }
-    </style>
+  /* Mobile menu button */
+  #mobile-menu-btn {
+    display:none; flex-direction:column; gap:5px; cursor:none;
+    padding:0.4rem;
+  }
+  #mobile-menu-btn span {
+    display:block; width:24px; height:1px; background:var(--white);
+    transition:all 0.3s;
+  }
+  @media (max-width:1024px) { #mobile-menu-btn { display:flex; } }
+</style>
 </head>
-
 <body>
 
-    <!-- LOADER -->
+<!-- ═══ CUSTOM CURSOR ═══ -->
+<div id="cursor"><div id="cursor-dot"></div></div>
+<div id="cursor-ring"></div>
 
-    <div class="loader">
-        <h1>SKOV <span>GROUP</span></h1>
-        <p>CODE • CAPITAL • CONCRETE</p>
+<!-- ═══ GRAIN ═══ -->
+<div id="grain"></div>
+
+<!-- ═══════════════════════════════════════
+     CINEMATIC INTRO
+════════════════════════════════════════ -->
+<div id="intro">
+  <div class="intro-logo">SKOV</div>
+  <div class="intro-line"></div>
+  <div class="intro-tagline">Build Smarter. Live Better.</div>
+  <div class="intro-progress"><div class="intro-progress-bar"></div></div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     NAVIGATION
+════════════════════════════════════════ -->
+<nav id="nav">
+  <a href="#" class="nav-logo">
+    <div class="nav-logo-mark">SG</div>
+    SKOV GROUP
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#why">Why SKOV</a></li>
+    <li><a href="#cities">Coverage</a></li>
+    <li><a href="#" onclick="openModal('contact-modal');return false;">Contact Contractor</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:1rem;">
+    <button id="music-toggle" onclick="toggleMusic()" title="Toggle music" aria-label="Toggle background music">♪</button>
+    <button class="nav-cta" onclick="openModal('join-modal')">Join as Builder</button>
+    <button id="mobile-menu-btn" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Audio element — replace src with your song file -->
+<audio id="bg-music" loop preload="none">
+  <source src="your-premium-song.mp3" type="audio/mpeg"/>
+  <!-- Place your music file in the /public folder of your Next.js project -->
+</audio>
+
+<!-- ═══════════════════════════════════════
+     HERO
+════════════════════════════════════════ -->
+<section id="hero">
+  <div class="hero-orb hero-orb-1"></div>
+  <div class="hero-orb hero-orb-2"></div>
+
+  <!-- VIDEO BACKGROUND — replace with your actual video file -->
+  <div class="hero-video-wrap">
+    <!-- If you have a video, use: <video autoplay muted loop playsinline src="your-hero-video.mp4"></video> -->
+    <!-- This placeholder shows until you add your video -->
+    <div class="hero-video-placeholder" id="hero-placeholder">
+      <div class="hero-placeholder-city">
+        <!-- Decorative skyline silhouette -->
+        <div class="building" style="width:20px;height:180px;"></div>
+        <div class="building" style="width:30px;height:260px;"></div>
+        <div class="building" style="width:15px;height:140px;"></div>
+        <div class="building" style="width:45px;height:320px;"></div>
+        <div class="building" style="width:20px;height:200px;"></div>
+        <div class="building" style="width:60px;height:400px;"></div>
+        <div class="building" style="width:25px;height:280px;"></div>
+        <div class="building" style="width:35px;height:240px;"></div>
+        <div class="building" style="width:50px;height:360px;"></div>
+        <div class="building" style="width:18px;height:160px;"></div>
+        <div class="building" style="width:40px;height:300px;"></div>
+        <div class="building" style="width:28px;height:220px;"></div>
+        <div class="building" style="width:55px;height:380px;"></div>
+        <div class="building" style="width:22px;height:170px;"></div>
+        <div class="building" style="width:38px;height:250px;"></div>
+      </div>
     </div>
+  </div>
 
-    <!-- HERO -->
-
-    <section class="hero">
-
-        <div class="hero-content">
-
-            <h1>Build <span>Smarter</span> Homes</h1>
-
-            <p>
-                Verified contractors, luxury construction,
-                premium modern homes and trusted local experts —
-                all inside one futuristic ecosystem.
-            </p>
-
-            <div class="btns">
-                <button class="btn gold">Explore Contractors</button>
-                <button class="btn dark">View Portfolio</button>
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- CONTRACTORS -->
-
-    <section class="section">
-
-        <div class="section-title">
-            <h2>Verified Contractors</h2>
-        </div>
-
-        <div class="cards">
-
-            <!-- CARD 1 -->
-
-            <div class="card">
-
-                <img
-                    src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2070&auto=format&fit=crop">
-
-                <div class="card-content">
-
-                    <div class="tag">SKOV VERIFIED</div>
-
-                    <h3>Luxury Home Builder</h3>
-
-                    <p>Raipur • 12+ Years Experience</p>
-
-                    <a href="#" class="whatsapp">Contact</a>
-
-                </div>
-
-            </div>
-
-            <!-- CARD 2 -->
-
-            <div class="card">
-
-                <img
-                    src="https://images.unsplash.com/photo-1484154218962-a197022b5858?q=80&w=2074&auto=format&fit=crop">
-
-                <div class="card-content">
-
-                    <div class="tag">PREMIUM INTERIORS</div>
-
-                    <h3>Interior Designer</h3>
-
-                    <p>VIP Road • Modern Villas</p>
-
-                    <a href="#" class="whatsapp">Contact</a>
-
-                </div>
-
-            </div>
-
-            <!-- CARD 3 -->
-
-            <div class="card">
-
-                <img
-                    src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto=format&fit=crop">
-
-                <div class="card-content">
-
-                    <div class="tag">TOP RATED</div>
-
-                    <h3>Construction Expert</h3>
-
-                    <p>Baloda Bazar • Trusted Team</p>
-
-                    <a href="#" class="whatsapp">Contact</a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </section>
-
-    <!-- POPUP -->
-
-    <div class="popup">
-        Partner mil gayi... ab ghar kab bana rahe ho? 🌝
+  <div class="hero-content">
+    <div class="hero-eyebrow">India's Premium PropTech Platform</div>
+    <h1 class="hero-title">
+      Build <em>Smarter</em>.<br>
+      <span class="outline">Live Better.</span>
+    </h1>
+    <div class="hero-divider"></div>
+    <p class="hero-tagline">Where Vision Meets Verified Craftsmanship</p>
+    <p class="hero-subtitle">
+      Connecting discerning homeowners with India's most elite, verified builders and contractors. 
+      Every project. Every city. Every standard.
+    </p>
+    <div class="hero-ctas">
+      <button class="btn-primary" onclick="openModal('join-modal')">
+        <span>Join as Contractor / Builder</span>
+        <span>→</span>
+      </button>
+      <button class="btn-secondary" onclick="openModal('contact-modal')">
+        <span>Contact a Contractor</span>
+      </button>
+      <a href="#how" class="btn-ghost">
+        <span>See How It Works</span>
+        <span class="arrow">→</span>
+      </a>
     </div>
+  </div>
 
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     STATS TICKER
+════════════════════════════════════════ -->
+<div class="stats-ticker">
+  <div class="ticker-track" id="ticker">
+    <!-- Items duplicated for infinite loop -->
+    <div class="ticker-item">
+      <div class="ticker-num">500+</div>
+      <div><div class="ticker-label">Verified Builders</div></div>
+    </div>
+    <div class="ticker-dot"></div>
+    <div class="ticker-item">
+      <div class="ticker-num">₹200Cr+</div>
+      <div><div class="ticker-label">Projects Facilitated</div></div>
+    </div>
+    <div class="ticker-dot"></div>
+    <div class="ticker-item">
+      <div class="ticker-num">28</div>
+      <div><div class="ticker-label">Cities Covered</div></div>
+    </div>
+    <div class="ticker-dot"></div>
+    <div class="ticker-item">
+      <div class="ticker-num">98%</div>
+      <div><div class="ticker-label">Client Satisfaction</div></div>
+    </div>
+    <div class="ticker-dot"></div>
+    <div class="ticker-item">
+      <div class="ticker-num">4.9★</div>
+      <div><div class="ticker-label">Average Rating</div></div>
+    </div>
+    <div class="ticker-dot"></div>
+    <div class="ticker-item">
+      <div class="ticker-num">0</div>
+      <div><div class="ticker-label">Compromises</div></div>
+    </div>
+    <div class="ticker-dot"></div>
+    <!-- Duplicate for seamless loop -->
+    <div class="ticker-item">
+      <div class="ticker-num">500+</div>
+      <div><div class="ticker-label">Verified Builders</div></div>
+    </div>
+    <div class="ticker-dot"></div>
+    <div class="ticker-item">
+      <div class="ticker-num">₹200Cr+</div>
+      <div><div class="ticker-label">Projects Facilitated</div></div>
+    </div>
+    <div class="ticker-dot"></div>
+    <div class="ticker-item">
+      <div class="ticker-num">28</div>
+      <div><div class="ticker-label">Cities Covered</div></div>
+    </div>
+    <div class="ticker-dot"></div>
+    <div class="ticker-item">
+      <div class="ticker-num">₹200Cr+</div>
+      <div><div class="ticker-label">Projects Facilitated</div></div>
+    </div>
+    <div class="ticker-dot"></div>
+    <div class="ticker-item">
+      <div class="ticker-num">98%</div>
+      <div><div class="ticker-label">Client Satisfaction</div></div>
+    </div>
+    <div class="ticker-dot"></div>
+    <div class="ticker-item">
+      <div class="ticker-num">4.9★</div>
+      <div><div class="ticker-label">Average Rating</div></div>
+    </div>
+    <div class="ticker-dot"></div>
+    <div class="ticker-item">
+      <div class="ticker-num">0</div>
+      <div><div class="ticker-label">Compromises</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SERVICES
+════════════════════════════════════════ -->
+<section id="services">
+  <div class="max-w">
+    <div class="reveal">
+      <div class="section-label">What We Offer</div>
+      <h2 class="section-title">An Ecosystem of <em>Excellence</em></h2>
+      <p class="section-desc">Every service engineered for the discerning homeowner and the ambitious builder alike.</p>
+    </div>
+    <div class="services-grid reveal" style="transition-delay:0.2s;">
+      <div class="service-card">
+        <div class="service-num">01</div>
+        <div class="service-icon">⬡</div>
+        <h3>Verified Contractor Network</h3>
+        <p>A rigorously screened ecosystem of India's finest builders, architects, and specialty contractors. GSTIN verified. Portfolio reviewed. Reference checked.</p>
+        <div class="service-badge">✦ Background Verified</div>
+      </div>
+      <div class="service-card">
+        <div class="service-num">02</div>
+        <div class="service-icon">◈</div>
+        <h3>Smart Project Matching</h3>
+        <p>Our intelligent algorithm matches your project's scale, budget, and style preferences to the most compatible professionals in your city.</p>
+        <div class="service-badge">✦ AI-Powered</div>
+      </div>
+      <div class="service-card">
+        <div class="service-num">03</div>
+        <div class="service-icon">◎</div>
+        <h3>Escrow-Protected Payments</h3>
+        <p>Your investment is protected through milestone-based escrow payments. Funds release only when work meets your approved standards.</p>
+        <div class="service-badge">✦ Coming Soon</div>
+      </div>
+      <div class="service-card">
+        <div class="service-num">04</div>
+        <div class="service-icon">⬘</div>
+        <h3>Portfolio & Showcase</h3>
+        <p>Builders build their digital legacy. Curated project galleries, verified reviews, and trust scores that speak louder than any sales pitch.</p>
+        <div class="service-badge">✦ For Builders</div>
+      </div>
+      <div class="service-card">
+        <div class="service-num">05</div>
+        <div class="service-icon">◉</div>
+        <h3>Inquiry & Lead Management</h3>
+        <p>Contractors receive qualified, intent-rich leads. Homeowners get responses from genuinely interested professionals. No spam. No noise.</p>
+        <div class="service-badge">✦ Quality Filtered</div>
+      </div>
+      <div class="service-card">
+        <div class="service-num">06</div>
+        <div class="service-icon">⬟</div>
+        <h3>SKOV Verified Badge</h3>
+        <p>The gold standard of contractor trust in India. Our multi-layer verification badge signals credibility to every homeowner who sees it.</p>
+        <div class="service-badge" style="background:rgba(201,168,76,0.1);">✦ SKOV CERTIFIED</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     HOW IT WORKS
+════════════════════════════════════════ -->
+<section id="how">
+  <div class="max-w">
+    <div class="reveal">
+      <div class="section-label">The Process</div>
+      <h2 class="section-title">From Vision to <em>Reality</em></h2>
+    </div>
+    <div class="process-wrap">
+      <div class="process-steps reveal">
+        <div class="process-step">
+          <div class="step-num">01</div>
+          <div class="step-body">
+            <h3>Contractors Self-Register</h3>
+            <p>Builders, architects, and contractors apply through our elite application flow. Submit credentials, portfolio, references, and GSTIN details.</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-num">02</div>
+          <div class="step-body">
+            <h3>Verification & Curation</h3>
+            <p>Our team conducts background checks, portfolio review, and client reference verification. Only the top tier earns SKOV Verified status.</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-num">03</div>
+          <div class="step-body">
+            <h3>Homeowners Discover</h3>
+            <p>Clients browse a curated marketplace of verified professionals filtered by city, specialty, budget range, and project type.</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-num">04</div>
+          <div class="step-body">
+            <h3>Connect & Build</h3>
+            <p>Secure inquiries, milestone-based tracking, and verified reviews ensure every project exceeds expectations — on both sides.</p>
+          </div>
+        </div>
+      </div>
+      <div class="process-visual reveal" style="transition-delay:0.3s;">
+        <div class="process-diagram">
+          <div class="pd-node active">Apply</div>
+          <div class="pd-arrow"></div>
+          <div class="pd-node">Verify</div>
+          <div class="pd-arrow"></div>
+          <div class="pd-node">Publish</div>
+          <div class="pd-arrow"></div>
+          <div class="pd-node">Connect</div>
+          <div class="pd-arrow"></div>
+          <div class="pd-node">Build</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     WHY SKOV
+════════════════════════════════════════ -->
+<section id="why">
+  <div class="max-w">
+    <div class="reveal">
+      <div class="section-label">Why SKOV Group</div>
+      <h2 class="section-title">The Standard Others <em>Aspire</em> To</h2>
+      <p class="section-desc">We didn't build another directory. We built a trust infrastructure for India's construction economy.</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-feature-list reveal">
+        <div class="why-feature">
+          <div class="why-icon">✦</div>
+          <div>
+            <h3>Zero Tolerance for Mediocrity</h3>
+            <p>Every contractor on SKOV passes a 7-point verification matrix. License check, GSTIN validation, portfolio review, reference calls, site visits, dispute history, and client ratings.</p>
+          </div>
+        </div>
+        <div class="why-feature">
+          <div class="why-icon">⬡</div>
+          <div>
+            <h3>Transparent Pricing Architecture</h3>
+            <p>Contractors publish structured rate cards. Homeowners see real project costs before a single call. No surprises. No negotiations in the dark.</p>
+          </div>
+        </div>
+        <div class="why-feature">
+          <div class="why-icon">◎</div>
+          <div>
+            <h3>City-Level Intelligence</h3>
+            <p>SKOV maintains real-time contractor availability, project load data, and local compliance knowledge for every city we operate in.</p>
+          </div>
+        </div>
+        <div class="why-feature">
+          <div class="why-icon">⬘</div>
+          <div>
+            <h3>Builder Growth Engine</h3>
+            <p>SKOV isn't just leads — it's reputation. Verified contractors build digital credibility that compounds over every completed project.</p>
+          </div>
+        </div>
+      </div>
+      <div class="why-visual reveal" style="transition-delay:0.2s;">
+        <div class="why-visual-inner">
+          <div class="why-central-mark">SG</div>
+        </div>
+        <div class="trust-badge-float">
+          <div class="badge-icon">✦</div>
+          <div class="badge-text-wrap">
+            <div class="badge-title">SKOV Verified</div>
+            <div class="badge-sub">7-Point Certification</div>
+          </div>
+        </div>
+        <div class="trust-badge-float">
+          <div class="badge-icon">⬡</div>
+          <div class="badge-text-wrap">
+            <div class="badge-title">GSTIN Validated</div>
+            <div class="badge-sub">Government Registered</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     TESTIMONIALS
+════════════════════════════════════════ -->
+<section id="testimonials" style="padding-bottom:2rem;">
+  <div class="max-w">
+    <div class="reveal">
+      <div class="section-label">Client Stories</div>
+      <h2 class="section-title">Voices of <em>Trust</em></h2>
+    </div>
+  </div>
+  <div class="testimonial-track-wrap" style="margin-top:4rem;">
+    <div class="testimonial-track">
+      <!-- Set 1 -->
+      <div class="testimonial-card">
+        <p class="testimonial-text">SKOV Group completely transformed how I found a contractor for my penthouse renovation. The verification process gave me confidence from day one. The builder they connected me with was exceptional.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">R</div>
+          <div>
+            <div class="author-name">Rahul Mehta</div>
+            <div class="author-role">Homeowner · Mumbai</div>
+          </div>
+        </div>
+        <div class="star-row"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      </div>
+      <div class="testimonial-card">
+        <p class="testimonial-text">As a contractor, SKOV gave me a platform where my quality work actually gets recognized. The verification badge has become our biggest credibility signal with premium clients.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">A</div>
+          <div>
+            <div class="author-name">Arjun Sharma</div>
+            <div class="author-role">Master Builder · Delhi NCR</div>
+          </div>
+        </div>
+        <div class="star-row"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      </div>
+      <div class="testimonial-card">
+        <p class="testimonial-text">The escrow payment system and milestone tracking made our 2-year villa project completely transparent. I always knew where every rupee was going. Incredible platform.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">P</div>
+          <div>
+            <div class="author-name">Priya Nair</div>
+            <div class="author-role">Villa Owner · Bengaluru</div>
+          </div>
+        </div>
+        <div class="star-row"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      </div>
+      <div class="testimonial-card">
+        <p class="testimonial-text">I joined SKOV six months ago and my inquiries have tripled. More importantly, they're qualified leads from clients who actually appreciate premium craftsmanship.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">V</div>
+          <div>
+            <div class="author-name">Vikram Desai</div>
+            <div class="author-role">Interior Contractor · Pune</div>
+          </div>
+        </div>
+        <div class="star-row"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      </div>
+      <!-- Set 2 (duplicate for loop) -->
+      <div class="testimonial-card">
+        <p class="testimonial-text">SKOV Group completely transformed how I found a contractor for my penthouse renovation. The verification process gave me confidence from day one. The builder they connected me with was exceptional.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">R</div>
+          <div>
+            <div class="author-name">Rahul Mehta</div>
+            <div class="author-role">Homeowner · Mumbai</div>
+          </div>
+        </div>
+        <div class="star-row"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      </div>
+      <div class="testimonial-card">
+        <p class="testimonial-text">As a contractor, SKOV gave me a platform where my quality work actually gets recognized. The verification badge has become our biggest credibility signal with premium clients.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">A</div>
+          <div>
+            <div class="author-name">Arjun Sharma</div>
+            <div class="author-role">Master Builder · Delhi NCR</div>
+          </div>
+        </div>
+        <div class="star-row"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      </div>
+      <div class="testimonial-card">
+        <p class="testimonial-text">The escrow payment system and milestone tracking made our 2-year villa project completely transparent. I always knew where every rupee was going. Incredible platform.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">P</div>
+          <div>
+            <div class="author-name">Priya Nair</div>
+            <div class="author-role">Villa Owner · Bengaluru</div>
+          </div>
+        </div>
+        <div class="star-row"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      </div>
+      <div class="testimonial-card">
+        <p class="testimonial-text">I joined SKOV six months ago and my inquiries have tripled. More importantly, they're qualified leads from clients who actually appreciate premium craftsmanship.</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">V</div>
+          <div>
+            <div class="author-name">Vikram Desai</div>
+            <div class="author-role">Interior Contractor · Pune</div>
+          </div>
+        </div>
+        <div class="star-row"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     CITY COVERAGE
+════════════════════════════════════════ -->
+<section id="cities">
+  <div class="max-w">
+    <div class="reveal">
+      <div class="section-label">City Coverage</div>
+      <h2 class="section-title">Building India, <em>City by City</em></h2>
+      <p class="section-desc">Expanding rapidly across India's most ambitious real estate markets.</p>
+    </div>
+    <div class="cities-grid reveal" style="transition-delay:0.2s;">
+      <div class="city-item"><div class="city-dot"></div><div class="city-name">Mumbai</div><div class="city-state">Maharashtra</div></div>
+      <div class="city-item"><div class="city-dot"></div><div class="city-name">Delhi NCR</div><div class="city-state">Delhi / UP / Haryana</div></div>
+      <div class="city-item"><div class="city-dot"></div><div class="city-name">Bengaluru</div><div class="city-state">Karnataka</div></div>
+      <div class="city-item"><div class="city-dot"></div><div class="city-name">Hyderabad</div><div class="city-state">Telangana</div></div>
+      <div class="city-item"><div class="city-dot"></div><div class="city-name">Pune</div><div class="city-state">Maharashtra</div></div>
+      <div class="city-item"><div class="city-dot"></div><div class="city-name">Chennai</div><div class="city-state">Tamil Nadu</div></div>
+      <div class="city-item"><div class="city-dot"></div><div class="city-name">Ahmedabad</div><div class="city-state">Gujarat</div></div>
+      <div class="city-item"><div class="city-dot"></div><div class="city-name">Kolkata</div><div class="city-state">West Bengal</div></div>
+      <div class="city-item"><div class="city-dot" style="opacity:0.3;background:var(--mist);"></div><div class="city-name" style="opacity:0.5;">Jaipur</div><div class="city-state" style="opacity:0.5;">Rajasthan</div><div class="city-coming">Coming Soon</div></div>
+      <div class="city-item"><div class="city-dot" style="opacity:0.3;background:var(--mist);"></div><div class="city-name" style="opacity:0.5;">Surat</div><div class="city-state" style="opacity:0.5;">Gujarat</div><div class="city-coming">Coming Soon</div></div>
+      <div class="city-item"><div class="city-dot" style="opacity:0.3;background:var(--mist);"></div><div class="city-name" style="opacity:0.5;">Lucknow</div><div class="city-state" style="opacity:0.5;">Uttar Pradesh</div><div class="city-coming">Coming Soon</div></div>
+      <div class="city-item"><div class="city-dot" style="opacity:0.3;background:var(--mist);"></div><div class="city-name" style="opacity:0.5;">Indore</div><div class="city-state" style="opacity:0.5;">Madhya Pradesh</div><div class="city-coming">Coming Soon</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     CTA BAND
+════════════════════════════════════════ -->
+<section id="cta-band">
+  <div class="max-w">
+    <h2 class="cta-band-title reveal">
+      Ready to Build<br>
+      <em>Something Legendary?</em>
+    </h2>
+    <p class="cta-band-sub reveal" style="transition-delay:0.2s;">Whether you're a homeowner with a vision or a builder with a legacy — SKOV Group is your platform.</p>
+    <div class="cta-band-btns reveal" style="transition-delay:0.3s;">
+      <button class="btn-primary" onclick="openModal('join-modal')">
+        <span>Join as Contractor / Builder</span>
+        <span>→</span>
+      </button>
+      <button class="btn-secondary" onclick="openModal('contact-modal')">
+        <span>Contact a Contractor</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════
+     FOOTER
+════════════════════════════════════════ -->
+<footer>
+  <div class="max-w">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">SKOV GROUP</div>
+        <p>India's premium PropTech platform connecting homeowners with verified, elite builders and contractors. Build Smarter. Live Better.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Platform</h4>
+        <ul>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#how">How It Works</a></li>
+          <li><a href="#why">Why SKOV</a></li>
+          <li><a href="#cities">City Coverage</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>For Builders</h4>
+        <ul>
+          <li><a href="#" onclick="openModal('join-modal');return false;">Join as Contractor</a></li>
+          <li><a href="#" onclick="openModal('join-modal');return false;">Get SKOV Verified</a></li>
+          <li><a href="#">Builder Login</a></li>
+          <li><a href="#">Builder FAQs</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About SKOV</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 SKOV Group. All rights reserved.</div>
+      <div class="footer-tag">Build Smarter. Live Better.</div>
+      <div class="footer-legal">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Cookies</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════
+     MODAL: CONTACT CONTRACTOR
+════════════════════════════════════════ -->
+<div class="modal-overlay" id="contact-modal" onclick="closeModalOnOverlay(event,'contact-modal')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('contact-modal')">✕</button>
+    <div class="modal-header">
+      <div class="modal-eyebrow">Premium Contractor Access</div>
+      <h2 class="modal-title">Connect with an <em>Elite Builder</em></h2>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:0.9rem;color:var(--mist);line-height:1.8;margin-bottom:2rem;">
+        SKOV Group maintains a curated, growing network of verified contractors. We don't publish a static directory — every contractor on SKOV is actively verified and onboarded by our team to ensure you receive only premium professionals.
+      </p>
+      <div class="contact-info-card">
+        <div class="contact-icon">✦</div>
+        <div>
+          <div class="contact-card-title">How Contractor Access Works</div>
+          <div class="contact-card-text">Once contractors apply and pass our 7-point verification, they become searchable in our platform. Post your project requirements and receive curated matches from verified builders in your city.</div>
+        </div>
+      </div>
+      <div class="contact-info-card">
+        <div class="contact-icon">◎</div>
+        <div>
+          <div class="contact-card-title">Are You a Contractor?</div>
+          <div class="contact-card-text">Join SKOV Group's elite network. Apply through our self-registration flow, complete verification, and start receiving quality leads from serious homeowners across India.</div>
+        </div>
+      </div>
+      <div class="contact-info-card">
+        <div class="contact-icon">⬡</div>
+        <div>
+          <div class="contact-card-title">Get Notified First</div>
+          <div class="contact-card-text">Leave your contact below and be among the first to access our verified contractor marketplace when it launches in your city.</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:1rem;margin-top:2rem;">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" placeholder="Rajesh Kumar"/>
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" placeholder="+91 98765 43210"/>
+        </div>
+        <div class="form-group">
+          <label>Your City</label>
+          <select>
+            <option value="">Select your city</option>
+            <option>Mumbai</option>
+            <option>Delhi NCR</option>
+            <option>Bengaluru</option>
+            <option>Hyderabad</option>
+            <option>Pune</option>
+            <option>Chennai</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <button class="btn-primary" style="width:100%;justify-content:center;" onclick="submitContactForm()">
+          <span>Notify Me When Available</span>
+          <span>→</span>
+        </button>
+        <p style="font-size:0.75rem;color:var(--mist);text-align:center;">
+          Or if you're a contractor — <a href="#" onclick="switchModal('contact-modal','join-modal');return false;" style="color:var(--gold);text-decoration:underline;">Apply to Join SKOV →</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MODAL: JOIN AS CONTRACTOR
+════════════════════════════════════════ -->
+<div class="modal-overlay" id="join-modal" onclick="closeModalOnOverlay(event,'join-modal')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('join-modal')">✕</button>
+    <div class="modal-header">
+      <div class="modal-eyebrow">Elite Application</div>
+      <h2 class="modal-title">Join SKOV <em>Group</em></h2>
+    </div>
+    <div class="modal-body">
+      <!-- Steps indicator -->
+      <div class="join-steps" id="join-steps">
+        <div class="join-step-tab active" id="tab-1">About You</div>
+        <div class="join-step-tab" id="tab-2">Expertise</div>
+        <div class="join-step-tab" id="tab-3">Credentials</div>
+        <div class="join-step-tab" id="tab-4">Submit</div>
+      </div>
+
+      <!-- Step 1: About You -->
+      <div class="join-form-step active" id="step-1">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Full Name *</label>
+            <input type="text" id="f-name" placeholder="Your full name" required/>
+          </div>
+          <div class="form-group">
+            <label>Business Name *</label>
+            <input type="text" id="f-biz" placeholder="Company / Firm name" required/>
+          </div>
+          <div class="form-group">
+            <label>Phone Number *</label>
+            <input type="tel" id="f-phone" placeholder="+91 98765 43210" required/>
+          </div>
+          <div class="form-group">
+            <label>Email Address *</label>
+            <input type="email" id="f-email" placeholder="you@company.com" required/>
+          </div>
+          <div class="form-group">
+            <label>Primary City *</label>
+            <select id="f-city">
+              <option value="">Select your city</option>
+              <option>Mumbai</option>
+              <option>Delhi NCR</option>
+              <option>Bengaluru</option>
+              <option>Hyderabad</option>
+              <option>Pune</option>
+              <option>Chennai</option>
+              <option>Ahmedabad</option>
+              <option>Kolkata</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Years in Business *</label>
+            <select id="f-years">
+              <option value="">Select range</option>
+              <option>1–3 years</option>
+              <option>3–7 years</option>
+              <option>7–15 years</option>
+              <option>15+ years</option>
+            </select>
+          </div>
+        </div>
+        <div class="step-nav">
+          <div></div>
+          <div style="display:flex;align-items:center;gap:1.5rem;">
+            <div class="step-progress-dots">
+              <div class="step-dot active"></div>
+              <div class="step-dot"></div>
+              <div class="step-dot"></div>
+              <div class="step-dot"></div>
+            </div>
+            <button class="btn-primary" onclick="goStep(2)"><span>Continue</span><span>→</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2: Expertise -->
+      <div class="join-form-step" id="step-2">
+        <p style="font-size:0.85rem;color:var(--mist);margin-bottom:1.5rem;">Select all specialties that apply to your work:</p>
+        <div class="specialty-grid" id="specialty-grid">
+          <div class="specialty-chip" onclick="toggleChip(this)">Residential Construction</div>
+          <div class="specialty-chip" onclick="toggleChip(this)">Commercial Projects</div>
+          <div class="specialty-chip" onclick="toggleChip(this)">Interior Design</div>
+          <div class="specialty-chip" onclick="toggleChip(this)">Renovation & Remodeling</div>
+          <div class="specialty-chip" onclick="toggleChip(this)">Electrical Work</div>
+          <div class="specialty-chip" onclick="toggleChip(this)">Plumbing & Sanitation</div>
+          <div class="specialty-chip" onclick="toggleChip(this)">Structural Engineering</div>
+          <div class="specialty-chip" onclick="toggleChip(this)">Waterproofing</div>
+          <div class="specialty-chip" onclick="toggleChip(this)">Flooring & Tiling</div>
+          <div class="specialty-chip" onclick="toggleChip(this)">Painting & Finishing</div>
+          <div class="specialty-chip" onclick="toggleChip(this)">Landscape Design</div>
+          <div class="specialty-chip" onclick="toggleChip(this)">Smart Home / AV</div>
+        </div>
+        <div class="form-row" style="margin-top:2rem;">
+          <div class="form-group form-full">
+            <label>Typical Project Budget Range</label>
+            <select>
+              <option value="">Select range</option>
+              <option>₹5L – ₹25L</option>
+              <option>₹25L – ₹1Cr</option>
+              <option>₹1Cr – ₹5Cr</option>
+              <option>₹5Cr+</option>
+            </select>
+          </div>
+        </div>
+        <div class="step-nav">
+          <button class="btn-ghost" onclick="goStep(1)"><span>← Back</span></button>
+          <div style="display:flex;align-items:center;gap:1.5rem;">
+            <div class="step-progress-dots">
+              <div class="step-dot"></div>
+              <div class="step-dot active"></div>
+              <div class="step-dot"></div>
+              <div class="step-dot"></div>
+            </div>
+            <button class="btn-primary" onclick="goStep(3)"><span>Continue</span><span>→</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Credentials -->
+      <div class="join-form-step" id="step-3">
+        <div class="form-row">
+          <div class="form-group">
+            <label>GSTIN Number</label>
+            <input type="text" placeholder="22AAAAA0000A1Z5"/>
+          </div>
+          <div class="form-group">
+            <label>Business PAN</label>
+            <input type="text" placeholder="AAAPL1234C"/>
+          </div>
+          <div class="form-group">
+            <label>License / Registration No.</label>
+            <input type="text" placeholder="If applicable"/>
+          </div>
+          <div class="form-group">
+            <label>Number of Completed Projects</label>
+            <select>
+              <option value="">Select</option>
+              <option>1–10 projects</option>
+              <option>10–50 projects</option>
+              <option>50–200 projects</option>
+              <option>200+ projects</option>
+            </select>
+          </div>
+          <div class="form-group form-full">
+            <label>Portfolio / Website URL</label>
+            <input type="url" placeholder="https://yourwebsite.com or Instagram link"/>
+          </div>
+          <div class="form-group form-full">
+            <label>Tell Us About Your Work</label>
+            <textarea placeholder="Describe your best projects, your team size, your approach to quality..."></textarea>
+          </div>
+        </div>
+        <div class="step-nav">
+          <button class="btn-ghost" onclick="goStep(2)"><span>← Back</span></button>
+          <div style="display:flex;align-items:center;gap:1.5rem;">
+            <div class="step-progress-dots">
+              <div class="step-dot"></div>
+              <div class="step-dot"></div>
+              <div class="step-dot active"></div>
+              <div class="step-dot"></div>
+            </div>
+            <button class="btn-primary" onclick="goStep(4)"><span>Continue</span><span>→</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4: Review & Submit -->
+      <div class="join-form-step" id="step-4">
+        <div style="background:var(--graphite);border:1px solid rgba(201,168,76,0.1);padding:2rem;margin-bottom:2rem;">
+          <div style="font-family:var(--font-ui);font-size:0.7rem;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;">What Happens Next</div>
+          <div style="display:flex;flex-direction:column;gap:1rem;">
+            <div style="display:flex;gap:1rem;align-items:flex-start;">
+              <div style="color:var(--gold);flex-shrink:0;margin-top:0.1rem;">01</div>
+              <p style="font-size:0.85rem;color:var(--mist);line-height:1.6;">Our team reviews your application within 48–72 hours</p>
+            </div>
+            <div style="display:flex;gap:1rem;align-items:flex-start;">
+              <div style="color:var(--gold);flex-shrink:0;margin-top:0.1rem;">02</div>
+              <p style="font-size:0.85rem;color:var(--mist);line-height:1.6;">We conduct a background verification and reference check</p>
+            </div>
+            <div style="display:flex;gap:1rem;align-items:flex-start;">
+              <div style="color:var(--gold);flex-shrink:0;margin-top:0.1rem;">03</div>
+              <p style="font-size:0.85rem;color:var(--mist);line-height:1.6;">Approved contractors receive onboarding access and SKOV Verified badge</p>
+            </div>
+            <div style="display:flex;gap:1rem;align-items:flex-start;">
+              <div style="color:var(--gold);flex-shrink:0;margin-top:0.1rem;">04</div>
+              <p style="font-size:0.85rem;color:var(--mist);line-height:1.6;">Your profile goes live and you start receiving qualified leads</p>
+            </div>
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:1.5rem;">
+          <label style="display:flex;align-items:flex-start;gap:0.8rem;cursor:none;">
+            <input type="checkbox" style="margin-top:0.2rem;accent-color:var(--gold);width:16px;height:16px;"/>
+            <span style="font-size:0.85rem;color:var(--mist);line-height:1.6;font-weight:300;">
+              I confirm all information provided is accurate and I agree to SKOV Group's 
+              <a href="#" style="color:var(--gold);">Terms of Service</a> and 
+              <a href="#" style="color:var(--gold);">Privacy Policy</a>.
+            </span>
+          </label>
+        </div>
+        <div class="step-nav">
+          <button class="btn-ghost" onclick="goStep(3)"><span>← Back</span></button>
+          <div style="display:flex;align-items:center;gap:1.5rem;">
+            <div class="step-progress-dots">
+              <div class="step-dot"></div>
+              <div class="step-dot"></div>
+              <div class="step-dot"></div>
+              <div class="step-dot active"></div>
+            </div>
+            <button class="btn-primary" onclick="submitJoinForm()"><span>Submit Application</span><span>✦</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Success State -->
+      <div class="join-success" id="join-success">
+        <div class="success-check">✦</div>
+        <div class="success-title">Application Received</div>
+        <p class="success-text" style="max-width:400px;margin:0 auto 2rem;">
+          Welcome to the SKOV Group waitlist. Our verification team will review your application and contact you within 48–72 hours. Extraordinary builders deserve extraordinary platforms.
+        </p>
+        <p style="font-family:var(--font-display);font-style:italic;color:var(--gold);font-size:1.1rem;">Build Smarter. Live Better.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     SCRIPTS
+════════════════════════════════════════ -->
+<script>
+// ─── Custom Cursor ───────────────────────
+const cursorDot  = document.getElementById('cursor-dot');
+const cursorRing = document.getElementById('cursor-ring');
+let cx = 0, cy = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => {
+  cx = e.clientX; cy = e.clientY;
+  cursorDot.style.left = cx + 'px';
+  cursorDot.style.top  = cy + 'px';
+});
+function animateRing() {
+  rx += (cx - rx) * 0.12;
+  ry += (cy - ry) * 0.12;
+  cursorRing.style.left = rx + 'px';
+  cursorRing.style.top  = ry + 'px';
+  requestAnimationFrame(animateRing);
+}
+animateRing();
+document.querySelectorAll('a,button,.service-card,.city-item,.specialty-chip,.process-step').forEach(el => {
+  el.addEventListener('mouseenter', () => {
+    cursorRing.style.width  = '60px';
+    cursorRing.style.height = '60px';
+    cursorRing.style.borderColor = 'rgba(201,168,76,0.9)';
+  });
+  el.addEventListener('mouseleave', () => {
+    cursorRing.style.width  = '40px';
+    cursorRing.style.height = '40px';
+    cursorRing.style.borderColor = 'rgba(201,168,76,0.6)';
+  });
+});
+
+// ─── Intro Sequence ──────────────────────
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('intro').classList.add('hidden');
+  }, 3600);
+});
+
+// ─── Navbar Scroll ───────────────────────
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ─── Scroll Reveal ───────────────────────
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 80);
+      revealObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+// ─── Music Toggle ────────────────────────
+let musicStarted = false;
+const audio = document.getElementById('bg-music');
+const musicBtn = document.getElementById('music-toggle');
+function toggleMusic() {
+  if (!musicStarted) {
+    audio.play().then(() => {
+      musicStarted = true;
+      musicBtn.classList.add('playing');
+      musicBtn.textContent = '♫';
+    }).catch(() => {
+      // Autoplay blocked — user needs to interact first (already done by click)
+      console.log('Audio file not found. Add your-premium-song.mp3 to enable music.');
+    });
+    return;
+  }
+  if (audio.paused) {
+    audio.play();
+    musicBtn.classList.add('playing');
+    musicBtn.textContent = '♫';
+  } else {
+    audio.pause();
+    musicBtn.classList.remove('playing');
+    musicBtn.textContent = '♪';
+  }
+}
+
+// ─── Modal System ────────────────────────
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeModalOnOverlay(e, id) {
+  if (e.target.id === id) closeModal(id);
+}
+function switchModal(fromId, toId) {
+  closeModal(fromId);
+  setTimeout(() => openModal(toId), 300);
+}
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    document.querySelectorAll('.modal-overlay.open').forEach(m => {
+      m.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  }
+});
+
+// ─── Join Flow Steps ─────────────────────
+let currentStep = 1;
+function goStep(n) {
+  document.getElementById('step-' + currentStep).classList.remove('active');
+  document.getElementById('tab-' + currentStep).classList.remove('active');
+  if (currentStep < n) document.getElementById('tab-' + currentStep).classList.add('done');
+  currentStep = n;
+  const stepEl = document.getElementById('step-' + n);
+  if (stepEl) {
+    stepEl.classList.add('active');
+    document.getElementById('tab-' + n).classList.add('active');
+  }
+}
+function toggleChip(el) { el.classList.toggle('selected'); }
+function submitJoinForm() {
+  // Hide all steps and tabs
+  document.getElementById('join-steps').style.display = 'none';
+  for (let i = 1; i <= 4; i++) {
+    const s = document.getElementById('step-' + i);
+    if (s) s.classList.remove('active');
+  }
+  document.getElementById('join-success').classList.add('show');
+  // FUTURE: POST data to /api/contractor/apply
+}
+function submitContactForm() {
+  closeModal('contact-modal');
+  // FUTURE: POST data to /api/leads/notify
+  setTimeout(() => {
+    alert('✦ You\'re on the list! We\'ll notify you when SKOV launches in your city.');
+  }, 400);
+}
+
+// ─── Parallax Hero Orbs ──────────────────
+document.addEventListener('mousemove', e => {
+  const x = (e.clientX / window.innerWidth - 0.5) * 30;
+  const y = (e.clientY / window.innerHeight - 0.5) * 30;
+  const orb1 = document.querySelector('.hero-orb-1');
+  const orb2 = document.querySelector('.hero-orb-2');
+  if (orb1) orb1.style.transform = `translate(${x * 0.5}px, ${y * 0.5}px)`;
+  if (orb2) orb2.style.transform = `translate(${-x * 0.3}px, ${-y * 0.3}px)`;
+});
+
+// ─── Reset join modal on close ───────────────────
+document.getElementById('join-modal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    // Reset handled by closeModalOnOverlay
+  }
+});
+</script>
 </body>
-
 </html>
